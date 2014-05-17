@@ -21,7 +21,6 @@
 		18468ACD1924928D00F90480 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18468AAF1924928C00F90480 /* UIKit.framework */; };
 		18468AD51924928D00F90480 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18468AD31924928D00F90480 /* InfoPlist.strings */; };
 		18468AD71924928D00F90480 /* IPSqueezableViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18468AD61924928D00F90480 /* IPSqueezableViewControllerTests.m */; };
-		18996C751927410C00F547D5 /* IPNavBarSqueezableViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 18996C731927410C00F547D5 /* IPNavBarSqueezableViewController.h */; };
 		18996C761927410C00F547D5 /* IPNavBarSqueezableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18996C741927410C00F547D5 /* IPNavBarSqueezableViewController.m */; };
 		18996C7C1927415200F547D5 /* backButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 18996C781927415200F547D5 /* backButton.png */; };
 		18996C7D1927415200F547D5 /* backButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18996C791927415200F547D5 /* backButton@2x.png */; };
@@ -294,7 +293,6 @@
 				18996C761927410C00F547D5 /* IPNavBarSqueezableViewController.m in Sources */,
 				18468ABC1924928C00F90480 /* IPAppDelegate.m in Sources */,
 				18468AC21924928D00F90480 /* IPViewController.m in Sources */,
-				18996C751927410C00F547D5 /* IPNavBarSqueezableViewController.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
