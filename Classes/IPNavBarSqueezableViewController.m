@@ -9,6 +9,14 @@
 #import "IPNavBarSqueezableViewController.h"
 
 #define DEBUG_SQUEEZE NO
+#define SCREEN_WIDTH ((([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) || ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortraitUpsideDown)) ? [[UIScreen mainScreen] bounds].size.width : [[UIScreen mainScreen] bounds].size.height)
+
+#define NAVBAR_HEIGHT ((([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) || ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortraitUpsideDown)) ? 44 : 32)
+
+#define TOOLBAR_HEIGHT ((([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) || ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortraitUpsideDown)) ? 49 : 32)
+
+#define SQUEEZED_NAVBAR_HEIGHT 20
+#define STATUSBAR_HEIGHT 20
 
 @interface IPNavBarSqueezableViewController () <UIScrollViewDelegate>
 
@@ -39,7 +47,7 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
     self.dragStart = NO;
     
     // Set up title view
-    self.titleView =[[UILabel alloc] initWithFrame:CGRectMake(50, 0, 220, 44)];
+    self.titleView =[[UILabel alloc] initWithFrame:CGRectMake(50 * SCREEN_WIDTH / 320, 0, SCREEN_WIDTH * 220 / 320, NAVBAR_HEIGHT)];
     self.titleView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     self.titleView.textAlignment = NSTextAlignmentCenter;
     self.titleView.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -87,15 +95,15 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
     //[self.navigationController.navigationBar/ addConstraint:myConstraint];
     [self.navigationItem setHidesBackButton:NO animated:NO];
     [self.navigationController setToolbarHidden:NO animated:NO];
-    self.triggeringScrollView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0);
-    self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 49, 0);
+    self.triggeringScrollView.contentInset = UIEdgeInsetsMake(NAVBAR_HEIGHT + STATUSBAR_HEIGHT, 0, TOOLBAR_HEIGHT, 0);
+    self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(NAVBAR_HEIGHT + STATUSBAR_HEIGHT, 0, TOOLBAR_HEIGHT, 0);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     // Unsqueeze manually
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, 320, 44);
+    self.navigationController.navigationBar.frame = CGRectMake(0, STATUSBAR_HEIGHT, SCREEN_WIDTH, NAVBAR_HEIGHT);
     self.navigationController.navigationBar.backIndicatorImage = nil;
     self.navigationController.navigationBar.backIndicatorTransitionMaskImage = nil;
     self.titleView.font = [UIFont boldSystemFontOfSize:17.f];
@@ -248,7 +256,8 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     self.navBarStatus = IPNavBarSqueezingStatusSqueezing;
     
     // Adjust the frame of navigation bar according to the progress
-    CGRect frame = CGRectMake(0, 20, 320, 44 - 24 * progress);
+    //CGRect b = [UIScreen mainScreen].bounds;
+    CGRect frame = CGRectMake(0, STATUSBAR_HEIGHT, SCREEN_WIDTH, NAVBAR_HEIGHT - (NAVBAR_HEIGHT - SQUEEZED_NAVBAR_HEIGHT) * progress);
     self.navigationController.navigationBar.frame = frame;
     if (progress > 0.5) {
         self.titleView.font = [UIFont systemFontOfSize:17.f - 5.f * progress];
@@ -260,15 +269,15 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if (progress == 1.0) {
         self.navBarStatus = IPNavBarSqueezingStatusSqueezed;
         self.titleView.userInteractionEnabled = YES;
-        self.triggeringScrollView.contentInset = UIEdgeInsetsMake(40, 0, 0, 0);
-        self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(40, 0, 0, 0);
+        self.triggeringScrollView.contentInset = UIEdgeInsetsMake(STATUSBAR_HEIGHT + SQUEEZED_NAVBAR_HEIGHT, 0, 0, 0);
+        self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(STATUSBAR_HEIGHT + SQUEEZED_NAVBAR_HEIGHT, 0, 0, 0);
     }
 }
 
 - (void) squeezeNavBar {
     self.navBarStatus = IPNavBarSqueezingStatusSqueezing;
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        CGRect frame = CGRectMake(0, 20, 320, 44 - 24);
+        CGRect frame = CGRectMake(0, STATUSBAR_HEIGHT, SCREEN_WIDTH, SQUEEZED_NAVBAR_HEIGHT);
         self.navigationController.navigationBar.frame = frame;
         self.titleView.font = [UIFont systemFontOfSize:17.f - 5.f];
     } completion:^(BOOL finished) {
@@ -276,8 +285,8 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
         [self.navigationController.navigationBar addGestureRecognizer:self.recognizer];
         [self.navigationController.navigationBar setUserInteractionEnabled:YES];
         self.titleView.userInteractionEnabled = YES;
-        self.triggeringScrollView.contentInset = UIEdgeInsetsMake(40, 0, 0, 0);
-        self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(40, 0, 0, 0);
+        self.triggeringScrollView.contentInset = UIEdgeInsetsMake(STATUSBAR_HEIGHT + SQUEEZED_NAVBAR_HEIGHT, 0, 0, 0);
+        self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(STATUSBAR_HEIGHT + SQUEEZED_NAVBAR_HEIGHT, 0, 0, 0);
     }];
 }
 
@@ -285,7 +294,7 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     [self.navigationController.navigationBar removeGestureRecognizer:self.recognizer];
     self.navBarStatus = IPNavBarSqueezingStatusUnSqueezing;
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.navigationController.navigationBar.frame = CGRectMake(0, 20, 320, 44);
+        self.navigationController.navigationBar.frame = CGRectMake(0, STATUSBAR_HEIGHT, SCREEN_WIDTH, NAVBAR_HEIGHT);
     } completion:^(BOOL finished) {
         self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@"backButton.png"];
         self.navigationController.navigationBar.backIndicatorTransitionMaskImage = [UIImage imageNamed:@"backButton.png"];
@@ -294,8 +303,8 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
             self.titleView.font = [UIFont boldSystemFontOfSize:17.f];
         } completion:^(BOOL finished) {
             self.navBarStatus = IPNavBarSqueezingStatusNormal;
-            self.triggeringScrollView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0);
-            self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0);
+            self.triggeringScrollView.contentInset = UIEdgeInsetsMake(NAVBAR_HEIGHT + STATUSBAR_HEIGHT, 0, TOOLBAR_HEIGHT, 0);
+            self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(NAVBAR_HEIGHT + STATUSBAR_HEIGHT, 0, 0, 0);
             if (completion) {
                 completion();
             }
@@ -318,5 +327,8 @@ velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self unSqueezeNavBarWithCompletion:nil];
+}
 
 @end
