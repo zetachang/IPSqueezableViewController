@@ -22,9 +22,9 @@ Pod::Spec.new do |s|
   s.author    = "David Chang"
   s.social_media_url   = "http://twitter.com/zetachang"
 
-  s.platform     = :ios
+  s.platform     = :ios, "7.0"
 
-  s.source       = { :git => "http://github.com/zetachang/IPSqueezableViewController.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/zetachang/IPSqueezableViewController.git", :tag => "0.0.1" }
   
   s.source_files  = "Classes"
 
