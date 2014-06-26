@@ -12,7 +12,7 @@ Though iOS 8 introduce the `condensesBarsOnSwipe` property. It's still not the s
 
 ## Installation
 
-[CocoaPods](http://cocoapods.org) is the recommended method of installing Ono. Simply add the following line to your `Podfile`:
+[CocoaPods](http://cocoapods.org) is the recommended method to install. Simply add the following line to your `Podfile`:
 
 #### Podfile
 
