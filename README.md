@@ -1,6 +1,6 @@
 # IPSqueezableViewController 
 
-**A condensing effect of navigation bar as we see in Safari.app**
+**Condensing effect of navigation bar as the one in Safari.app**
 
 Though iOS 8 introduce the `condensesBarsOnSwipe` property. It's still not the same as the one we see in Safari.app.
 
