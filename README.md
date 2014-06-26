@@ -4,6 +4,12 @@
 
 Though iOS 8 introduce the `condensesBarsOnSwipe` property. It's still not the same as the one we see in Safari.app.
 
+## Demo
+
+| Safari        | IPSqueezableViewController  |
+| ------------- | --------------------------- |
+| ![](https://raw.githubusercontent.com/zetachang/IPSqueezableViewController/master/Demo/demo-safari.gif) | ![](https://raw.githubusercontent.com/zetachang/IPSqueezableViewController/master/Demo/demo.gif) |
+
 ## Installation
 
 [CocoaPods](http://cocoapods.org) is the recommended method of installing Ono. Simply add the following line to your `Podfile`:
@@ -11,7 +17,7 @@ Though iOS 8 introduce the `condensesBarsOnSwipe` property. It's still not the s
 #### Podfile
 
 ```ruby
-pod 'IPSqueezableViewController'
+pod 'IPSqueezableViewController', :github => 'zetachang/IPSqueezableViewController'
 ```
 
 ## Usage
