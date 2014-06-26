@@ -17,7 +17,7 @@ Though iOS 8 introduce the `condensesBarsOnSwipe` property. It's still not the s
 #### Podfile
 
 ```ruby
-pod 'IPSqueezableViewController', :github => 'zetachang/IPSqueezableViewController'
+pod 'IPSqueezableViewController'
 ```
 
 ## Usage
