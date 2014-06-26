@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name         = "IPSqueezableViewController"
   s.version      = "0.0.1"
-  s.summary      = "A condensing effect of navigation bar as we see in Safari.app"
+  s.summary      = "Condensing effect of navigation bar as the one in Safari.app "
 
   s.description  = <<-DESC
                    A condensing effect of navigation bar as we see in Safari.app. Support iOS 7.

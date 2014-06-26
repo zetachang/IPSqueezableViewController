@@ -35,7 +35,7 @@ pod 'IPSqueezableViewController', :github => 'zetachang/IPSqueezableViewControll
 
 Suggestions or PR are welcome :-)
 
-### Contact
+## Contact
 
 [David Chang](http://github.com/zetachang)
 [@zetachang](https://twitter.com/zetachang)
