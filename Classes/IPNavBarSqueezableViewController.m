@@ -65,13 +65,7 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
     self.titleViewOriginal = self.navigationItem.titleView;
     self.titleViewPlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(0.f, 0.f,
                                                                           SCREEN_WIDTH * 220.f / 320.f,
-                                                                          NAVBAR_HEIGHT)];
-    self.titleViewPlaceholder.autoresizingMask = UIViewAutoresizingFlexibleHeight
-                                    | UIViewAutoresizingFlexibleTopMargin
-                                    | UIViewAutoresizingFlexibleBottomMargin
-                                    | UIViewAutoresizingFlexibleLeftMargin
-                                    | UIViewAutoresizingFlexibleWidth
-                                    | UIViewAutoresizingFlexibleRightMargin;
+                                                                          kStatusBarHeight)];
     self.titleViewPlaceholder.textAlignment = NSTextAlignmentCenter;
     self.titleViewPlaceholder.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleViewPlaceholder.textColor = self.titleColor ? self.titleColor
@@ -367,8 +361,34 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
 #endif
     self.navBarStatus = IPNavBarSqueezingStatusSqueezing;
     self.titleViewPlaceholder.text = self.title;
-    self.navigationItem.titleView  = self.titleViewPlaceholder;
-
+    
+    UIView* titleViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f,
+                                                                             SCREEN_WIDTH,
+                                                                             kStatusBarHeight)];
+    self.titleViewPlaceholder.translatesAutoresizingMaskIntoConstraints = NO;
+    [titleViewContainer addSubview:self.titleViewPlaceholder];
+    
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self.titleViewPlaceholder
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:titleViewContainer
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1.0
+                                                                          constant:0.0];
+    NSLayoutConstraint* topMarginConstraint = [NSLayoutConstraint constraintWithItem:self.titleViewPlaceholder
+                                                                           attribute:NSLayoutAttributeTop
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:titleViewContainer
+                                                                           attribute:NSLayoutAttributeTop
+                                                                          multiplier:1
+                                                                            constant:4];
+    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:self.titleViewPlaceholder attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:kStatusBarHeight];
+    
+    self.navigationItem.titleView = titleViewContainer;
+    [titleViewContainer addConstraint:centerXConstraint];
+    [titleViewContainer addConstraint:topMarginConstraint];
+    [self.titleViewPlaceholder addConstraint:heightConstraint];
+    
     [self hideBarItemsAnimated:YES];
 
     [UIView animateWithDuration:kAnimationDuration
