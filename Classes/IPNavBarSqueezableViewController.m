@@ -74,8 +74,8 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
                                     | UIViewAutoresizingFlexibleRightMargin;
     self.titleViewPlaceholder.textAlignment = NSTextAlignmentCenter;
     self.titleViewPlaceholder.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.titleViewPlaceholder.textColor = [UINavigationBar
-                                           appearance].titleTextAttributes[NSForegroundColorAttributeName];
+    self.titleViewPlaceholder.textColor = self.titleColor ? self.titleColor
+                                                          : self.navigationController.navigationBar.tintColor;
     // Recognize tap on nav bar
     self.recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                               action:@selector(navBarTapped:)];
@@ -121,10 +121,6 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
                                                               0.f,
                                                               TOOLBAR_HEIGHT,
                                                               0.f);
-    self.triggeringScrollView.scrollIndicatorInsets = UIEdgeInsetsMake(NAVBAR_HEIGHT + kStatusBarHeight,
-                                                                       0.f,
-                                                                       TOOLBAR_HEIGHT,
-                                                                       0.f);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -199,6 +195,15 @@ typedef NS_ENUM(NSInteger, IPNavBarSqueezingStatus) {
     }
     self->_titleFont = titleFont;
     self.titleViewPlaceholder.font = self.titleFont;
+}
+
+- (void)setTitleColor:(UIColor *)titleColor
+{
+    if (CGColorEqualToColor(self.titleColor.CGColor, titleColor.CGColor)) {
+        return;
+    }
+    self->_titleColor = titleColor;
+    self.titleViewPlaceholder.textColor = self.titleColor;
 }
 
 
